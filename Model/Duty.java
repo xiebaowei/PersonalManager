@@ -2,9 +2,6 @@ package com.pm.model;
 
 
 
-
-
-
 //职务表对应的属性及方法（get,set,toString,构造方法等）的定义
 public class Duty {
 	  //职务Id 
