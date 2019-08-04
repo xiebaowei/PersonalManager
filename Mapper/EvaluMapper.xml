@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pm.mapper.EvaluMapper">
+
+    <resultMap type="Dept" id="deptResultMap">
+		<id property="id" column="Dep_id"></id>
+		<result property="dename" column="Dep_name"></result>
+	</resultMap>
+	<resultMap type="Duty" id="dutyResultMap">
+		<id property="id" column="Dut_id"></id>
+		<result property="duname" column="Dut_name"></result>
+	</resultMap>
+
+	<resultMap type="Title" id="titleResultMap">
+		<id property="id" column="Tit_id"></id>
+		<result property="tname" column="Tit_name"></result>
+	</resultMap>
+
+
+
+	<select id="findByIdemp" resultType="int" parameterType="int">
+		select count(*) from emp where Emp_id = #{id}
+	</select>
+	
+	<select id="findByNameEmp" resultType="int" parameterType="String">
+		select count(*) from Emp where Emp_name = #{name}
+	</select>
+	<select id="findIdByNameEmp" resultType="int" parameterType="String">
+		select Emp_id from Emp where Emp_name = #{name}
+	</select>
+	
+	<select id="findDeptId" resultType="int" parameterType="int">
+		select Dep_id from emp where Emp_id = #{id}
+	</select>
+	<select id="findDutyId" resultType="int" parameterType="int">
+		select Dut_id from emp where Emp_id = #{id}
+	</select>
+	<select id="findTitleId" resultType="int" parameterType="int">
+		select Tit_id from emp where Emp_id = #{id}
+	</select>
+	
+	<select id="allDept" resultMap="deptResultMap">
+		select * from dept 
+	</select>
+	<select id="allDuty" resultMap="dutyResultMap">
+		select * from duty
+	</select>
+	
+	<select id="allTitle" resultMap="titleResultMap">
+		select * from title
+	</select>
+	
+	<insert id="insert" parameterType="com.pm.model.Evalu">
+		insert into Evalu (Emp_id,PA_name,PA_res,PA_time)
+		value (#{empid},#{lx},#{result},#{time});
+	</insert>
+	
+	<insert id="insertEmp" parameterType="hashmap">
+		insert into Emp (Emp_id,Emp_name,Emp_sex,Emp_sel,Tit_id,Dep_id,Dut_id)
+		value (${eid},"${name}","${sex}","${salary}",${titid},${deid},${duid});
+	</insert>
+	
+	
+	<resultMap type="Evalu" id="paResultMap">
+		<id property="id" column="id"></id>
+		<result property="empid" column="eid"></result>
+		<result property="name" column="name"></result>
+		<result property="lx" column="lx"></result>
+		<result property="result" column="result"></result>
+		<result property="time" column="time"></result>
+	</resultMap>
+	<select id="evalulist" resultMap="paResultMap">
+		select pa.PA_id id, e.Emp_id eid,e.Emp_name name,pa.PA_name lx,pa.PA_time time,PA_res result
+		from emp e,evalu pa
+		where e.Emp_id = pa.Emp_id order by e.Emp_id
+	</select>
+	
+	<select id="evalulistbyeid" resultMap="paResultMap" parameterType="int">
+		select pa.PA_id id,e.Emp_id eid,e.Emp_name name,pa.PA_name lx,pa.PA_time time,PA_res result
+		from emp e,evalu pa
+		where e.Emp_id = pa.Emp_id and e.Emp_id = #{id}
+	</select>
+	
+	<select id="evalulistbyid" resultMap="paResultMap" parameterType="int">
+		select pa.PA_id id,e.Emp_id eid,e.Emp_name name,pa.PA_name lx,pa.PA_time time,PA_res result
+		from emp e,evalu pa
+		where e.Emp_id = pa.Emp_id and pa.PA_id = #{id}
+	</select>
+	
+	<update id="update" parameterType="com.pm.model.Evalu">
+		update evalu
+		set PA_name = #{lx},
+			PA_res = #{result},
+			PA_time = #{time}
+		where PA_id = #{id}
+	</update>
+	
+	<delete id="deleteById"  parameterType="int">
+		delete  from evalu where PA_id = #{id}
+	</delete>
+	
+	
+</mapper>
