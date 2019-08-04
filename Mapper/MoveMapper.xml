@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pm.mapper.MoveMapper">
+	<resultMap type="Dept" id="deptResultMap">
+		<id property="id" column="Dep_id"></id>
+		<result property="dename" column="Dep_name"></result>
+	</resultMap>
+	<resultMap type="Duty" id="dutyResultMap">
+		<id property="id" column="Dut_id"></id>
+		<result property="duname" column="Dut_name"></result>
+	</resultMap>
+	<select id="allDept" resultMap="deptResultMap">
+		select * from dept 
+	</select>
+	<select id="allDuty" resultMap="dutyResultMap">
+		select * from duty
+	</select>
+	<select id="findById" resultType="int" parameterType="int">
+		select count(*) from emp where Emp_id = #{id}
+	</select>
+	<update id="updateByMap" parameterType="hashmap">
+		update emp set Dep_id = ${deid2} where Emp_id = ${eid};
+		update emp set Dut_id = ${duid2} where Emp_id = ${eid};
+	</update>
+	<select id="findDeptId" resultType="int" parameterType="int">
+		select Dep_id from emp where Emp_id = #{id}
+	</select>
+	<select id="findDutyId" resultType="int" parameterType="int">
+		select Dut_id from emp where Emp_id = #{id}
+	</select>
+	<insert id="insertByMap" parameterType="hashmap">
+		insert into move (Emp_id,Dep_bid,Dep_aid,Dut_bid,Dut_aid,datatime)
+		value (${eid},${deid1},${deid2},${duid1},${duid2},"${datatime}");
+	</insert>
+	
+	
+	<resultMap type="Move" id="moveResultMap">
+		<id property="id" column="id"></id>
+		<result property="eid" column="eid"></result>
+		<result property="ename" column="ename"></result>
+		<result property="dept1" column="dename1"></result>
+		<result property="dept2" column="dename2"></result>
+		<result property="duty1" column="duname1"></result>
+		<result property="duty2" column="duname2"></result>
+		<result property="date" column="time"></result>
+	</resultMap>
+	<select id="list" resultMap="moveResultMap">
+		select m.Trans_id id,e.Emp_id eid,e.Emp_name ename,de1.Dep_name dename1,de2.Dep_name dename2,
+		du1.Dut_name duname1,du2.Dut_name duname2,m.datatime time
+		from move m,emp e,dept de1,dept de2,duty du1,duty du2
+		where m.Emp_id = e.Emp_id
+		and   m.Dep_bid = de1.Dep_id
+		and   m.Dep_aid = de2.Dep_id
+		and   m.Dut_bid = du1.Dut_id
+		and   m.Dut_aid = du2.Dut_id order by m.Trans_id
+	</select>
+	
+	<select id="listById" resultMap="moveResultMap" parameterType="int">
+		select m.Trans_id id,e.Emp_id eid,e.Emp_name ename,de1.Dep_name dename1,de2.Dep_name dename2,
+		du1.Dut_name duname1,du2.Dut_name duname2,m.datatime time
+		from move m,emp e,dept de1,dept de2,duty du1,duty du2
+		where m.Emp_id = e.Emp_id
+		and   m.Dep_bid = de1.Dep_id
+		and   m.Dep_aid = de2.Dep_id
+		and   m.Dut_bid = du1.Dut_id
+		and   m.Dut_aid = du2.Dut_id 
+		and   e.Emp_id = #{id}
+	</select>
+</mapper>
