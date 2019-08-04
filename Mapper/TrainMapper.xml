@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pm.mapper.TrainMapper">
+	<select id="findById" resultType="int" parameterType="int">
+		select count(*) from emp where Emp_id = #{id}
+	</select>
+	<resultMap type="Train" id="trainResultMap">
+		<id property="id" column="id"></id>
+		<result property="empid" column="eid"></result>
+		<result property="ename" column="ename"></result>
+		<result property="begintime" column="begintime"></result>
+		<result property="endtime" column="endtime"></result>
+		<result property="course" column="course"></result>
+		<result property="score" column="score"></result>
+	</resultMap>
+	<select id="tralist" resultMap="trainResultMap">
+		select t.Train_id id ,t.Emp_id eid,e.Emp_name ename,t.Train_timeBegin begintime,t.Train_timeEnd endtime,t.Train_course course,t.Train_scores score
+		from train t,emp e
+		where e.Emp_id = t.Emp_id order by e.Emp_id
+	</select>
+	<select id="tralistbyeid" resultMap="trainResultMap" parameterType="int">
+		select t.Train_id id ,t.Emp_id eid,e.Emp_name ename,t.Train_timeBegin begintime,t.Train_timeEnd endtime,t.Train_course course,t.Train_scores score
+		from train t,emp e
+		where e.Emp_id = t.Emp_id and e.Emp_id = #{id}
+	</select>
+	<select id="tralistbyid" resultMap="trainResultMap" parameterType="int">
+		select t.Train_id id ,t.Emp_id eid,e.Emp_name ename,t.Train_timeBegin begintime,t.Train_timeEnd endtime,t.Train_course course,t.Train_scores score
+		from train t,emp e
+		where e.Emp_id = t.Emp_id and t.Train_id = #{id}
+	</select>
+	
+	<update id="update" parameterType="com.pm.model.Train">
+		update train
+		set Train_timeBegin = #{begintime},
+			Train_timeEnd = #{endtime},
+			Train_course = #{course},
+			Train_scores = #{score}
+		where Train_id = #{id}
+	</update>
+	
+	<delete id="deleteById"  parameterType="int">
+		delete  from train where Train_id = #{id}
+	</delete>
+	
+	<insert id="insert" parameterType="com.pm.model.Train">
+		insert into train (Emp_id,Train_timeBegin,Train_timeEnd,sTrain_scores,Train_course)
+		value (#{empid},#{begintime},#{endtime},#{score},#{course});
+	</insert>
+</mapper>
