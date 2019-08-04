@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pm.mapper.UserMapper">
+	<select id="findById" resultType="com.pm.model.User" parameterType="int">
+		select * from user where id = #{id}
+	</select>
+	<select id="findByName" resultType="com.pm.model.User" parameterType="String">
+		select * from user where username = #{username}
+	</select>
+	<select id="findByIdEmp" resultType="int" parameterType="int">
+		select Emp_id from emp where Emp_id = #{id}
+	</select>
+	<insert id="insert" parameterType="com.pm.model.User">
+		insert into user ( id, username, password)
+		value (#{id},#{username},#{password});
+	</insert>
+	<resultMap type="Employee" id="empResultMap">
+		<id property="id" column="id"></id>
+		<result property="name" column="name"></result>
+		<result property="sex" column="sex"></result>
+		<result property="salary" column="salary"></result>
+		<result property="dept" column="dename"></result>
+		<result property="duty" column="duname"></result>
+		<result property="title" column="tname"></result>
+	</resultMap>
+	<select id="emplist" resultMap="empResultMap">
+		select e.Emp_id id,e.Emp_name name,e.Emp_sex sex,e.Emp_sel salary,de.Dep_name dename,du.Dut_name duname,ti.Tit_name tname
+		from emp e,dept de,duty du,title ti
+		where e.Dep_id = de.Dep_id and e.Dut_id = du.Dut_id and e.Tit_id = ti.Tit_id
+	</select>
+	
+	<select id="emplistbyid" resultMap="empResultMap" parameterType="int">
+		select e.Emp_id id,e.Emp_name name,e.Emp_sex sex,e.Emp_sel salary,de.Dep_name dename,du.Dut_name duname,ti.Tit_name tname
+		from emp e,dept de,duty du,title ti
+		where e.Dep_id = de.Dep_id and e.Dut_id = du.Dut_id and e.Tit_id = ti.Tit_id and e.Emp_id = #{id}
+	</select>
+	
+	<delete id="deleteById"  parameterType="int">
+		delete  from emp where Emp_id =#{id};
+		delete  from user where id =#{id}
+	</delete>
+	<update id="update" parameterType="com.pm.model.Employee">
+		update emp 
+		set Emp_name = #{name},
+			Emp_sex = #{sex},
+			Emp_sel = #{salary}
+		where Emp_id = #{id}
+	</update>
+	<update id="updateUser" parameterType="com.pm.model.User">
+		update user
+		set password = #{password}
+		where id = #{id}
+	</update>
+</mapper>
