@@ -60,7 +60,7 @@
 							<input type="submit" class="button" style="width: 100px;height: 40px;" value="登陆    &raquo;" />&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
 							<input type="button" class="button" style="width: 100px;height: 40px;" value="注册    &raquo;" onclick="location='${pageContext.request.contextPath }/html/user_add.jsp'"/>
 							<div style = "color : red">${ error }</div>
-						</p>
+					</p>
 						
 					</form>
 				</div>
